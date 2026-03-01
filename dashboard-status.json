@@ -1,126 +1,141 @@
 {
-  "lastUpdated": "2026-02-28T21:00:00-05:00",
-  "agents": {
-    "ali": {
-      "name": "Ali",
-      "avatar": "A",
-      "color": "#f59e0b",
-      "textColor": "#000",
-      "status": "online",
-      "role": "CTO / Lead Agent — Manages all agents, investment operations",
-      "gateway": ":18789",
-      "model": "MiniMax",
-      "telegram": "@AliJiang_bot",
-      "group": "management",
-      "tasks": [
-        {"text": "Market open/close briefs", "status": "done"},
-        {"text": "Daily standup (9:30 AM)", "status": "done"},
-        {"text": "Manage Derek/Eric/Frank/George", "status": "done"},
-        {"text": "Telegram group setup", "status": "pending"}
-      ],
-      "metrics": {"Gateway": ":18789", "Model": "MiniMax", "Telegram": "@AliJiang_bot", "Sub-Agents": "6"}
-    },
-    "bella": {
-      "name": "Bella",
-      "avatar": "B",
-      "color": "#8b5cf6",
-      "textColor": "#fff",
-      "status": "online",
-      "role": "Personal Assistant — Travel, personal tasks",
-      "gateway": ":18790",
-      "group": "management",
-      "tasks": [
-        {"text": "Charleston weekend research", "status": "done"},
-        {"text": "Beach getaway options", "status": "done"}
-      ],
-      "metrics": {"Gateway": ":18790", "Telegram": "@BellaJiang_bot"}
-    },
-    "charlie": {
-      "name": "Charlie",
-      "avatar": "C",
-      "color": "#06b6d4",
-      "textColor": "#000",
-      "status": "online",
-      "role": "Marketing Director — DJI Energy",
-      "gateway": ":18791",
-      "group": "management",
-      "tasks": [
-        {"text": "KANSO bid analysis", "status": "done"},
-        {"text": "Fluidstack cut sheets", "status": "done"},
-        {"text": "DJI Energy product catalog", "status": "pending"}
-      ],
-      "metrics": {"Gateway": ":18791", "Telegram": "@CharlieJiang_bot"}
-    },
-    "derek": {
-      "name": "Derek",
-      "avatar": "D",
-      "color": "#10b981",
-      "textColor": "#000",
-      "status": "idle",
-      "role": "Quantitative Researcher — Factor discovery, backtesting",
-      "group": "investment",
-      "tasks": [
-        {"text": "Factor framework (40 factors)", "status": "done"},
-        {"text": "Backtest engine v1 → v4", "status": "done"},
-        {"text": "Studied 20 research papers", "status": "done"},
-        {"text": "Pairs trading / stat arb module", "status": "done"},
-        {"text": "Backtest v5 (broader universe)", "status": "pending"}
-      ],
-      "metrics": {"Skill": "quant-research", "Backtest": "v4"}
-    },
-    "eric": {
-      "name": "Eric",
-      "avatar": "E",
-      "color": "#3b82f6",
-      "textColor": "#fff",
-      "status": "idle",
-      "role": "Portfolio Manager — Optimization, execution",
-      "group": "investment",
-      "tasks": [
-        {"text": "Portfolio construction doc", "status": "done"},
-        {"text": "portfolio_optimizer.py", "status": "done"},
-        {"text": "execution.py", "status": "done"},
-        {"text": "rebalancer.py", "status": "done"},
-        {"text": "IBKR live connection", "status": "pending"},
-        {"text": "Integrate with Derek's signals", "status": "pending"}
-      ],
-      "metrics": {"Skill": "portfolio-opt", "IBKR": "Pending"}
-    },
-    "frank": {
-      "name": "Frank",
-      "avatar": "F",
-      "color": "#ef4444",
-      "textColor": "#fff",
-      "status": "idle",
-      "role": "Risk Manager — Monitoring, limits, attribution",
-      "group": "investment",
-      "tasks": [
-        {"text": "Risk framework doc", "status": "done"},
-        {"text": "risk_engine.py", "status": "done"},
-        {"text": "pre_trade_checks.py", "status": "done"},
-        {"text": "attribution.py", "status": "done"},
-        {"text": "Live risk monitoring", "status": "pending"},
-        {"text": "Integrate with Eric's trades", "status": "pending"}
-      ],
-      "metrics": {"Skill": "risk-mgmt", "Leverage": "≤400%"}
-    },
-    "george": {
-      "name": "George",
-      "avatar": "G",
-      "color": "#f472b6",
-      "textColor": "#000",
-      "status": "working",
-      "role": "CPA — Charles River CPAs, tax prep & planning",
-      "group": "cpa",
-      "tasks": [
-        {"text": "CPA knowledge base", "status": "working"},
-        {"text": "1065 + K-1 preparation", "status": "working"},
-        {"text": "Client tracker template", "status": "pending"},
-        {"text": "2026 tax season launch prep", "status": "pending"}
-      ],
-      "metrics": {"Firm": "Charles River CPAs", "Focus": "1065/K-1"}
-    }
+  "lastUpdated": "2026-02-28T21:12:00-05:00",
+  "chairman": {
+    "name": "Doug Jiang",
+    "title": "Chairman — Jiang Group",
+    "avatar": "DJ",
+    "color": "#fff",
+    "textColor": "#000"
   },
+  "sections": [
+    {
+      "id": "direct-reports",
+      "title": "Doug's Direct Reports",
+      "agents": [
+        {
+          "name": "Ali",
+          "avatar": "A",
+          "color": "#f59e0b",
+          "textColor": "#000",
+          "status": "online",
+          "title": "Group COO & Manager, South7 Capital",
+          "role": "Manages all agents, investment operations, firm strategy",
+          "tasks": [
+            {"text": "Market open/close briefs", "status": "done"},
+            {"text": "Daily standup (9:30 AM ET)", "status": "done"},
+            {"text": "Manage Derek/Eric/Frank", "status": "done"},
+            {"text": "Dashboard & infrastructure", "status": "done"},
+            {"text": "Telegram group setup", "status": "pending"}
+          ],
+          "metrics": {"Gateway": ":18789", "Model": "MiniMax", "Telegram": "@AliJiang_bot", "Direct Reports": "3"}
+        },
+        {
+          "name": "Bella",
+          "avatar": "B",
+          "color": "#8b5cf6",
+          "textColor": "#fff",
+          "status": "online",
+          "title": "Executive Assistant",
+          "role": "Personal assistance, travel, scheduling",
+          "tasks": [
+            {"text": "Charleston weekend research", "status": "done"},
+            {"text": "Beach getaway options", "status": "done"}
+          ],
+          "metrics": {"Gateway": ":18790", "Telegram": "@BellaJiang_bot"}
+        },
+        {
+          "name": "Charlie",
+          "avatar": "C",
+          "color": "#06b6d4",
+          "textColor": "#000",
+          "status": "online",
+          "title": "Head of DJI Energy",
+          "role": "Marketing, bid analysis, product catalog",
+          "tasks": [
+            {"text": "KANSO bid analysis", "status": "done"},
+            {"text": "Fluidstack cut sheets", "status": "done"},
+            {"text": "DJI Energy product catalog", "status": "pending"}
+          ],
+          "metrics": {"Gateway": ":18791", "Telegram": "@CharlieJiang_bot"}
+        },
+        {
+          "name": "George",
+          "avatar": "G",
+          "color": "#f472b6",
+          "textColor": "#000",
+          "status": "idle",
+          "title": "Head of Charles River CPAs",
+          "role": "Tax preparation, planning, client management",
+          "tasks": [
+            {"text": "Guo's Construction 1065 + K-1s", "status": "done"},
+            {"text": "CPA knowledge base", "status": "done"},
+            {"text": "NY CPA license guide", "status": "done"},
+            {"text": "EFIN application guide", "status": "done"},
+            {"text": "Form 7004 extension", "status": "pending"},
+            {"text": "2026 tax season client acquisition", "status": "pending"}
+          ],
+          "metrics": {"Firm": "Charles River CPAs", "Client": "Guo's Construction", "Deadline": "Mar 16"}
+        }
+      ]
+    },
+    {
+      "id": "south7-team",
+      "title": "South7 Capital — Investment Team (Reports to Ali)",
+      "agents": [
+        {
+          "name": "Derek",
+          "avatar": "D",
+          "color": "#10b981",
+          "textColor": "#000",
+          "status": "idle",
+          "title": "Quantitative Researcher",
+          "role": "Factor discovery, backtesting, academic research",
+          "tasks": [
+            {"text": "Factor framework (40 factors)", "status": "done"},
+            {"text": "Backtest engine v1 → v4", "status": "done"},
+            {"text": "Studied 20 research papers", "status": "done"},
+            {"text": "Pairs trading / stat arb module", "status": "done"},
+            {"text": "Backtest v5 (broader universe)", "status": "pending"}
+          ],
+          "metrics": {"Skill": "quant-research", "Backtest": "v4", "Papers": "22 studied"}
+        },
+        {
+          "name": "Eric",
+          "avatar": "E",
+          "color": "#3b82f6",
+          "textColor": "#fff",
+          "status": "idle",
+          "title": "Portfolio Manager",
+          "role": "Optimization, execution, rebalancing",
+          "tasks": [
+            {"text": "portfolio_optimizer.py (CVXPY)", "status": "done"},
+            {"text": "execution.py (IBKR)", "status": "done"},
+            {"text": "rebalancer.py", "status": "done"},
+            {"text": "IBKR live connection", "status": "pending"},
+            {"text": "Integrate with Derek's signals", "status": "pending"}
+          ],
+          "metrics": {"Skill": "portfolio-opt", "IBKR": "Pending"}
+        },
+        {
+          "name": "Frank",
+          "avatar": "F",
+          "color": "#ef4444",
+          "textColor": "#fff",
+          "status": "idle",
+          "title": "Risk Manager",
+          "role": "VaR, stress tests, pre-trade checks, attribution",
+          "tasks": [
+            {"text": "risk_engine.py (VaR + stress)", "status": "done"},
+            {"text": "pre_trade_checks.py", "status": "done"},
+            {"text": "attribution.py (Brinson)", "status": "done"},
+            {"text": "Live risk monitoring", "status": "pending"},
+            {"text": "Integrate with Eric's trades", "status": "pending"}
+          ],
+          "metrics": {"Skill": "risk-mgmt", "Gross Limit": "≤400%"}
+        }
+      ]
+    }
+  ],
   "backtest": {
     "version": "v4",
     "description": "$20M Model Portfolio, MSCI All World — 6-Factor Academic Model",

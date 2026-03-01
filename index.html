@@ -3,55 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>South7 Capital — Agent Dashboard</title>
+<title>Jiang Group — Agent Dashboard</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; }
+  
   .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 24px 32px; border-bottom: 1px solid #2a2a4a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
   .header h1 { font-size: 24px; color: #fff; }
   .header h1 span { color: #f59e0b; }
   .header-right { display: flex; align-items: center; gap: 16px; }
   .header .time { color: #888; font-size: 14px; }
   .header .updated { color: #555; font-size: 12px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; padding: 24px 32px; }
-  .card { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 20px; transition: all 0.2s; }
+  .refresh-btn { background: #f59e0b; color: #000; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: background 0.2s; }
+  .refresh-btn:hover { background: #d97706; }
+  .refresh-btn.loading { background: #666; cursor: wait; }
+
+  /* Chairman Card */
+  .chairman-section { padding: 24px 32px 0; }
+  .chairman-card { background: linear-gradient(135deg, #1a1a2e, #2a1a3e); border: 2px solid #f59e0b; border-radius: 16px; padding: 24px 32px; display: flex; align-items: center; gap: 20px; max-width: 500px; margin: 0 auto; }
+  .chairman-avatar { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; flex-shrink: 0; border: 3px solid #f59e0b; }
+  .chairman-info h2 { font-size: 20px; color: #fff; }
+  .chairman-info .title { color: #f59e0b; font-size: 14px; font-weight: 600; }
+
+  /* Org lines */
+  .org-line { display: flex; justify-content: center; padding: 12px 0; }
+  .org-line .vline { width: 2px; height: 32px; background: #2a2a4a; }
+
+  /* Section */
+  .section { padding: 0 32px 24px; }
+  .section-title { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before, .section-title::after { content: ''; flex: 1; height: 1px; background: #2a2a3a; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 18px; transition: all 0.2s; }
   .card:hover { border-color: #f59e0b; transform: translateY(-2px); }
-  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 8px; }
-  .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; flex-shrink: 0; }
-  .status { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .card-header h2 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
+  .agent-title { color: #f59e0b; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .role { color: #888; font-size: 12px; margin-bottom: 10px; }
+
+  .status { padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
   .status.online { background: #064e3b; color: #34d399; }
   .status.working { background: #4c1d95; color: #a78bfa; animation: pulse 2s infinite; }
   .status.offline { background: #3f1219; color: #f87171; }
   .status.idle { background: #422006; color: #fbbf24; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-  .role { color: #888; font-size: 13px; margin-bottom: 12px; }
-  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-  .metric { background: #1a1a2a; padding: 8px 12px; border-radius: 8px; }
-  .metric .label { font-size: 11px; color: #666; text-transform: uppercase; }
-  .metric .value { font-size: 14px; font-weight: 600; color: #fff; }
-  .divider { height: 1px; background: #2a2a3a; margin: 12px 0; }
-  .section-title { padding: 24px 32px 0; font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 2px; }
-  .tasks h3 { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .task { padding: 4px 0; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+  .metric { background: #1a1a2a; padding: 6px 10px; border-radius: 6px; }
+  .metric .label { font-size: 10px; color: #666; text-transform: uppercase; }
+  .metric .value { font-size: 13px; font-weight: 600; color: #fff; }
+
+  .divider { height: 1px; background: #2a2a3a; margin: 10px 0; }
+  .tasks h3 { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .task { padding: 3px 0; font-size: 12px; display: flex; align-items: center; gap: 5px; }
   .task .done { color: #34d399; }
   .task .pending { color: #fbbf24; }
   .task .working { color: #a78bfa; }
-  .task .blocked { color: #f87171; }
+
+  /* Backtest */
   .backtest-summary { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; margin: 0 32px 24px; padding: 20px; }
-  .backtest-summary h3 { margin-bottom: 12px; color: #f59e0b; }
-  .bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+  .backtest-summary h3 { margin-bottom: 12px; color: #f59e0b; font-size: 15px; }
+  .bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
   .bt-metric { text-align: center; }
-  .bt-metric .val { font-size: 20px; font-weight: 700; }
+  .bt-metric .val { font-size: 18px; font-weight: 700; }
   .bt-metric .val.green { color: #34d399; }
   .bt-metric .val.red { color: #f87171; }
-  .bt-metric .lbl { font-size: 11px; color: #666; margin-top: 2px; }
-  .refresh-btn { background: #f59e0b; color: #000; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: background 0.2s; }
-  .refresh-btn:hover { background: #d97706; }
-  .refresh-btn.loading { background: #666; cursor: wait; }
+  .bt-metric .lbl { font-size: 10px; color: #666; margin-top: 2px; }
+
   .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6, #f59e0b); background-size: 300% 100%; animation: loading 1.5s infinite; z-index: 1000; }
   .loading-overlay.active { display: block; }
-  @keyframes loading { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+  @keyframes loading { 0% { background-position:0% 50%; } 100% { background-position:300% 50%; } }
 </style>
 </head>
 <body>
@@ -59,7 +82,7 @@
 <div class="loading-overlay" id="loader"></div>
 
 <div class="header">
-  <h1>🔥 South7 <span>Capital</span> — Agent Dashboard</h1>
+  <h1>🔥 <span>Jiang Group</span> — Agent Dashboard</h1>
   <div class="header-right">
     <span class="updated" id="updated"></span>
     <span class="time" id="clock"></span>
@@ -67,23 +90,30 @@
   </div>
 </div>
 
-<div id="management-section">
-  <div class="section-title">Management</div>
-  <div class="grid" id="management-grid"></div>
+<!-- Chairman -->
+<div class="chairman-section">
+  <div class="chairman-card" id="chairman-card"></div>
 </div>
 
-<div id="investment-section">
-  <div class="section-title">South7 Capital — Investment Team</div>
-  <div class="grid" id="investment-grid"></div>
+<div class="org-line"><div class="vline"></div></div>
+
+<!-- Direct Reports -->
+<div class="section" id="direct-section">
+  <div class="section-title" id="direct-title">Doug's Direct Reports</div>
+  <div class="grid" id="direct-grid"></div>
 </div>
 
-<div id="cpa-section">
-  <div class="section-title">Charles River CPAs</div>
-  <div class="grid" id="cpa-grid"></div>
+<div class="org-line"><div class="vline"></div></div>
+
+<!-- South7 Team -->
+<div class="section" id="south7-section">
+  <div class="section-title" id="south7-title">South7 Capital — Investment Team (Reports to Ali)</div>
+  <div class="grid" id="south7-grid"></div>
 </div>
 
-<div id="backtest-section">
-  <div class="section-title">Latest Backtest Results (Long-Short Hedge Fund)</div>
+<!-- Backtest -->
+<div class="section" id="backtest-section">
+  <div class="section-title">Latest Backtest Results</div>
   <div class="backtest-summary" id="backtest-summary"></div>
 </div>
 
@@ -93,90 +123,81 @@ const STATUS_URL = 'dashboard-status.json';
 function updateClock() {
   const now = new Date();
   document.getElementById('clock').textContent = now.toLocaleString('en-US', {
-    weekday: 'short', month: 'short', day: 'numeric',
-    hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short'
+    weekday:'short', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit', timeZoneName:'short'
   });
 }
 
 function statusIcon(s) {
-  const map = { done: '<span class="done">✓</span>', pending: '<span class="pending">◉</span>', working: '<span class="working">⟳</span>', blocked: '<span class="blocked">✗</span>' };
-  return map[s] || map.pending;
+  return {done:'<span class="done">✓</span>', pending:'<span class="pending">◉</span>', working:'<span class="working">⟳</span>'}[s] || '<span class="pending">◉</span>';
 }
-
 function statusBadge(s) {
-  const labels = { online: '● Online', working: '◉ Working', idle: '● Idle', offline: '● Offline' };
-  return `<span class="status ${s}">${labels[s] || s}</span>`;
+  const l = {online:'● Online', working:'◉ Working', idle:'● Idle', offline:'● Offline'};
+  return `<span class="status ${s}">${l[s]||s}</span>`;
 }
 
-function renderCard(agent) {
-  const metricsHtml = agent.metrics ? Object.entries(agent.metrics).map(([k,v]) =>
+function renderCard(a) {
+  const metrics = a.metrics ? Object.entries(a.metrics).map(([k,v]) =>
     `<div class="metric"><div class="label">${k}</div><div class="value">${v}</div></div>`
   ).join('') : '';
-
-  const tasksHtml = agent.tasks ? agent.tasks.map(t =>
+  const tasks = a.tasks ? a.tasks.map(t =>
     `<div class="task">${statusIcon(t.status)} ${t.text}</div>`
   ).join('') : '';
-
   return `<div class="card">
     <div class="card-header">
-      <h2><div class="avatar" style="background:${agent.color};color:${agent.textColor}">${agent.avatar}</div> ${agent.name}</h2>
-      ${statusBadge(agent.status)}
+      <h2><div class="avatar" style="background:${a.color};color:${a.textColor}">${a.avatar}</div> ${a.name}</h2>
+      ${statusBadge(a.status)}
     </div>
-    <div class="role">${agent.role}</div>
-    ${metricsHtml ? `<div class="metrics">${metricsHtml}</div>` : ''}
-    ${tasksHtml ? `<div class="divider"></div><div class="tasks"><h3>Tasks</h3>${tasksHtml}</div>` : ''}
+    <div class="agent-title">${a.title || ''}</div>
+    <div class="role">${a.role}</div>
+    ${metrics ? `<div class="metrics">${metrics}</div>` : ''}
+    ${tasks ? `<div class="divider"></div><div class="tasks"><h3>Tasks</h3>${tasks}</div>` : ''}
   </div>`;
 }
 
 function renderBacktest(bt) {
   if (!bt) return '';
-  const metricsHtml = bt.metrics.map(m =>
+  const m = bt.metrics.map(m =>
     `<div class="bt-metric"><div class="val ${m.color}">${m.value}</div><div class="lbl">${m.label}</div></div>`
   ).join('');
   return `<h3>📊 Backtest ${bt.version} — ${bt.description}</h3>
-    <div class="bt-grid">${metricsHtml}</div>
-    <div style="margin-top:12px;color:#888;font-size:13px;">⚠️ ${bt.note}</div>`;
+    <div class="bt-grid">${m}</div>
+    <div style="margin-top:12px;color:#888;font-size:12px;">⚠️ ${bt.note}</div>`;
 }
 
 async function loadStatus() {
   const btn = document.getElementById('refreshBtn');
   const loader = document.getElementById('loader');
-  btn.classList.add('loading');
-  btn.textContent = '⟳ Loading...';
+  btn.classList.add('loading'); btn.textContent = '⟳ Loading...';
   loader.classList.add('active');
 
   try {
     const res = await fetch(STATUS_URL + '?t=' + Date.now());
     const data = await res.json();
 
-    const groups = { management: [], investment: [], cpa: [] };
-    Object.values(data.agents).forEach(a => {
-      (groups[a.group] || groups.management).push(a);
+    // Chairman
+    const ch = data.chairman;
+    document.getElementById('chairman-card').innerHTML = `
+      <div class="chairman-avatar">${ch.avatar}</div>
+      <div class="chairman-info"><h2>${ch.name}</h2><div class="title">${ch.title}</div></div>`;
+
+    // Sections
+    data.sections.forEach(sec => {
+      const gridId = sec.id === 'direct-reports' ? 'direct-grid' : 'south7-grid';
+      const titleId = sec.id === 'direct-reports' ? 'direct-title' : 'south7-title';
+      document.getElementById(gridId).innerHTML = sec.agents.map(renderCard).join('');
+      document.getElementById(titleId).textContent = sec.title;
     });
 
-    document.getElementById('management-grid').innerHTML = groups.management.map(renderCard).join('');
-    document.getElementById('investment-grid').innerHTML = groups.investment.map(renderCard).join('');
-    document.getElementById('cpa-grid').innerHTML = groups.cpa.map(renderCard).join('');
+    // Backtest
     document.getElementById('backtest-summary').innerHTML = renderBacktest(data.backtest);
 
-    // Show/hide sections
-    document.getElementById('cpa-section').style.display = groups.cpa.length ? 'block' : 'none';
-
     const updated = new Date(data.lastUpdated);
-    document.getElementById('updated').textContent = 'Data: ' + updated.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  } catch(e) {
-    console.error('Failed to load status:', e);
-  } finally {
-    btn.classList.remove('loading');
-    btn.textContent = '↻ Refresh';
-    loader.classList.remove('active');
-  }
+    document.getElementById('updated').textContent = 'Data: ' + updated.toLocaleString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+  } catch(e) { console.error('Load failed:', e); }
+  finally { btn.classList.remove('loading'); btn.textContent = '↻ Refresh'; loader.classList.remove('active'); }
 }
 
-updateClock();
-setInterval(updateClock, 1000);
-loadStatus();
+updateClock(); setInterval(updateClock, 1000); loadStatus();
 </script>
-
 </body>
 </html>
