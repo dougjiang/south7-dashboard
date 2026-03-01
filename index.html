@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South7 Capital — Agent Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 24px 32px; border-bottom: 1px solid #2a2a4a; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 24px; color: #fff; }
+  .header h1 span { color: #f59e0b; }
+  .header .time { color: #888; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; padding: 24px 32px; }
+  .card { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 20px; transition: all 0.2s; }
+  .card:hover { border-color: #f59e0b; transform: translateY(-2px); }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 8px; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+  .status { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .status.online { background: #064e3b; color: #34d399; }
+  .status.working { background: #4c1d95; color: #a78bfa; }
+  .status.offline { background: #3f1219; color: #f87171; }
+  .status.idle { background: #422006; color: #fbbf24; }
+  .role { color: #888; font-size: 13px; margin-bottom: 12px; }
+  .tasks { margin-top: 12px; }
+  .tasks h3 { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .task { padding: 6px 0; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .task .done { color: #34d399; }
+  .task .pending { color: #fbbf24; }
+  .task .blocked { color: #f87171; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .metric { background: #1a1a2a; padding: 8px 12px; border-radius: 8px; }
+  .metric .label { font-size: 11px; color: #666; text-transform: uppercase; }
+  .metric .value { font-size: 16px; font-weight: 600; color: #fff; }
+  .divider { height: 1px; background: #2a2a3a; margin: 12px 0; }
+  .section-title { padding: 24px 32px 0; font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 2px; }
+  .backtest-summary { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; margin: 0 32px 24px; padding: 20px; }
+  .backtest-summary h3 { margin-bottom: 12px; color: #f59e0b; }
+  .bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+  .bt-metric { text-align: center; }
+  .bt-metric .val { font-size: 20px; font-weight: 700; }
+  .bt-metric .val.green { color: #34d399; }
+  .bt-metric .val.red { color: #f87171; }
+  .bt-metric .lbl { font-size: 11px; color: #666; margin-top: 2px; }
+  .refresh-btn { background: #f59e0b; color: #000; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+  .refresh-btn:hover { background: #d97706; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔥 South7 <span>Capital</span> — Agent Dashboard</h1>
+  <div>
+    <span class="time" id="clock"></span>
+    <button class="refresh-btn" onclick="location.reload()">↻ Refresh</button>
+  </div>
+</div>
+
+<!-- Management Layer -->
+<div class="section-title">Management</div>
+<div class="grid">
+
+  <!-- Ali -->
+  <div class="card">
+    <div class="card-header">
+      <h2><div class="avatar" style="background:#f59e0b;color:#000">A</div> Ali</h2>
+      <span class="status online">● Online</span>
+    </div>
+    <div class="role">CTO / Lead Agent — Manages all agents, investment operations</div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Gateway</div><div class="value">:18789</div></div>
+      <div class="metric"><div class="label">Model</div><div class="value">MiniMax</div></div>
+      <div class="metric"><div class="label">Telegram</div><div class="value">@AliJiang_bot</div></div>
+      <div class="metric"><div class="label">Sub-Agents</div><div class="value">5</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="tasks">
+      <h3>Active Tasks</h3>
+      <div class="task"><span class="done">✓</span> Market open/close briefs</div>
+      <div class="task"><span class="done">✓</span> Daily standup (9:30 AM)</div>
+      <div class="task"><span class="done">✓</span> Manage Derek/Eric/Frank</div>
+      <div class="task"><span class="pending">◉</span> Telegram group setup</div>
+    </div>
+  </div>
+
+  <!-- Bella -->
+  <div class="card">
+    <div class="card-header">
+      <h2><div class="avatar" style="background:#8b5cf6;color:#fff">B</div> Bella</h2>
+      <span class="status online">● Online</span>
+    </div>
+    <div class="role">Personal Assistant — Travel, personal tasks</div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Gateway</div><div class="value">:18790</div></div>
+      <div class="metric"><div class="label">Telegram</div><div class="value">@BellaJiang_bot</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="tasks">
+      <h3>Recent Tasks</h3>
+      <div class="task"><span class="done">✓</span> Charleston weekend research</div>
+      <div class="task"><span class="done">✓</span> Beach getaway options</div>
+    </div>
+  </div>
+
+  <!-- Charlie -->
+  <div class="card">
+    <div class="card-header">
+      <h2><div class="avatar" style="background:#06b6d4;color:#000">C</div> Charlie</h2>
+      <span class="status online">● Online</span>
+    </div>
+    <div class="role">Marketing Director — DJI Energy</div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Gateway</div><div class="value">:18791</div></div>
+      <div class="metric"><div class="label">Telegram</div><div class="value">@CharlieJiang_bot</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="tasks">
+      <h3>Recent Tasks</h3>
+      <div class="task"><span class="done">✓</span> KANSO bid analysis</div>
+      <div class="task"><span class="done">✓</span> Fluidstack cut sheets</div>
+      <div class="task"><span class="pending">◉</span> DJI Energy product catalog</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Investment Team -->
+<div class="section-title">South7 Capital — Investment Team</div>
+<div class="grid">
+
+  <!-- Derek -->
+  <div class="card">
+    <div class="card-header">
+      <h2><div class="avatar" style="background:#10b981;color:#000">D</div> Derek</h2>
+      <span class="status working">◉ Working</span>
+    </div>
+    <div class="role">Quantitative Researcher — Factor discovery, backtesting</div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Skill</div><div class="value">quant-research</div></div>
+      <div class="metric"><div class="label">Backtest</div><div class="value">v3</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="tasks">
+      <h3>Tasks</h3>
+      <div class="task"><span class="done">✓</span> Factor framework (40 factors)</div>
+      <div class="task"><span class="done">✓</span> Backtest engine v1 → v3</div>
+      <div class="task"><span class="done">✓</span> factor_library.py</div>
+      <div class="task"><span class="done">✓</span> data_pipeline.py</div>
+      <div class="task"><span class="pending">◉</span> Studying 20 research papers</div>
+      <div class="task"><span class="pending">◉</span> Backtest v4 (post-study)</div>
+    </div>
+  </div>
+
+  <!-- Eric -->
+  <div class="card">
+    <div class="card-header">
+      <h2><div class="avatar" style="background:#3b82f6;color:#fff">E</div> Eric</h2>
+      <span class="status idle">● Idle</span>
+    </div>
+    <div class="role">Portfolio Manager — Optimization, execution</div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Skill</div><div class="value">portfolio-opt</div></div>
+      <div class="metric"><div class="label">IBKR</div><div class="value">Pending</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="tasks">
+      <h3>Tasks</h3>
+      <div class="task"><span class="done">✓</span> Portfolio construction doc</div>
+      <div class="task"><span class="done">✓</span> portfolio_optimizer.py</div>
+      <div class="task"><span class="done">✓</span> execution.py</div>
+      <div class="task"><span class="done">✓</span> rebalancer.py</div>
+      <div class="task"><span class="pending">◉</span> IBKR live connection</div>
+      <div class="task"><span class="pending">◉</span> Integrate with Derek's signals</div>
+    </div>
+  </div>
+
+  <!-- Frank -->
+  <div class="card">
+    <div class="card-header">
+      <h2><div class="avatar" style="background:#ef4444;color:#fff">F</div> Frank</h2>
+      <span class="status idle">● Idle</span>
+    </div>
+    <div class="role">Risk Manager — Monitoring, limits, attribution</div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Skill</div><div class="value">risk-mgmt</div></div>
+      <div class="metric"><div class="label">Leverage</div><div class="value">≤400%</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="tasks">
+      <h3>Tasks</h3>
+      <div class="task"><span class="done">✓</span> Risk framework doc</div>
+      <div class="task"><span class="done">✓</span> risk_engine.py</div>
+      <div class="task"><span class="done">✓</span> pre_trade_checks.py</div>
+      <div class="task"><span class="done">✓</span> attribution.py</div>
+      <div class="task"><span class="pending">◉</span> Live risk monitoring</div>
+      <div class="task"><span class="pending">◉</span> Integrate with Eric's trades</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Backtest Results -->
+<div class="section-title">Latest Backtest Results (Long-Short Hedge Fund)</div>
+<div class="backtest-summary">
+  <h3>📊 Backtest v3 — $20M Model Portfolio, MSCI All World</h3>
+  <div class="bt-grid">
+    <div class="bt-metric"><div class="val red">-11.8%</div><div class="lbl">Total Return</div></div>
+    <div class="bt-metric"><div class="val red">-0.73</div><div class="lbl">Sharpe Ratio</div></div>
+    <div class="bt-metric"><div class="val green">-21.1%</div><div class="lbl">Max Drawdown</div></div>
+    <div class="bt-metric"><div class="val green">0.000</div><div class="lbl">Portfolio Beta</div></div>
+    <div class="bt-metric"><div class="val green">1.72x</div><div class="lbl">Avg Leverage</div></div>
+    <div class="bt-metric"><div class="val green">Yes</div><div class="lbl">Dollar-Neutral</div></div>
+  </div>
+  <div style="margin-top:12px;color:#888;font-size:13px;">
+    ⚠️ Risk controls work. Alpha needs improvement. Derek studying 20 foundational papers for v4.
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleString('en-US', {
+    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short'
+  });
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
