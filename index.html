@@ -6,80 +6,117 @@
 <title>Jiang Group — Agent Dashboard</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; overflow-x: hidden; }
   
-  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 24px 32px; border-bottom: 1px solid #2a2a4a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; position: sticky; top: 0; z-index: 100; }
-  .header h1 { font-size: 24px; color: #fff; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px 32px; border-bottom: 1px solid #2a2a4a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; position: sticky; top: 0; z-index: 100; }
+  .header h1 { font-size: 22px; color: #fff; }
   .header h1 span { color: #f59e0b; }
-  .header-right { display: flex; align-items: center; gap: 16px; }
-  .header .time { color: #888; font-size: 14px; }
-  .header .updated { color: #555; font-size: 12px; }
-  .refresh-btn { background: #f59e0b; color: #000; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: background 0.2s; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .header .time { color: #888; font-size: 13px; }
+  .header .updated { color: #555; font-size: 11px; }
+  .refresh-btn { background: #f59e0b; color: #000; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; }
   .refresh-btn:hover { background: #d97706; }
   .refresh-btn.loading { background: #666; cursor: wait; }
 
-  .chairman-section { padding: 24px 32px 0; }
-  .chairman-card { background: linear-gradient(135deg, #1a1a2e, #2a1a3e); border: 2px solid #f59e0b; border-radius: 16px; padding: 24px 32px; display: flex; align-items: center; gap: 20px; max-width: 500px; margin: 0 auto; }
-  .chairman-avatar { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; flex-shrink: 0; border: 3px solid #f59e0b; }
-  .chairman-info h2 { font-size: 20px; color: #fff; }
-  .chairman-info .title { color: #f59e0b; font-size: 14px; font-weight: 600; }
+  /* Org Chart Layout */
+  .org-chart { display: flex; flex-direction: column; align-items: center; padding: 32px 16px 16px; }
+  
+  /* Node styles */
+  .node { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 14px 18px; min-width: 160px; max-width: 220px; text-align: center; position: relative; transition: all 0.2s; }
+  .node:hover { border-color: #f59e0b; transform: translateY(-2px); }
+  .node.chairman { background: linear-gradient(135deg, #1a1a2e, #2a1a3e); border: 2px solid #f59e0b; min-width: 220px; }
+  .node .avatar { width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; margin-bottom: 6px; }
+  .node .name { font-size: 15px; font-weight: 700; color: #fff; }
+  .node .title { font-size: 11px; color: #f59e0b; font-weight: 600; margin-top: 2px; }
+  .node .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 4px; vertical-align: middle; }
+  .node .status-dot.online { background: #34d399; }
+  .node .status-dot.working { background: #a78bfa; animation: pulse 2s infinite; }
+  .node .status-dot.idle { background: #fbbf24; }
+  .node .status-dot.offline { background: #f87171; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
 
-  .org-line { display: flex; justify-content: center; padding: 12px 0; }
-  .org-line .vline { width: 2px; height: 32px; background: #2a2a4a; }
+  /* Connector lines */
+  .vline { width: 2px; height: 28px; background: #333; margin: 0 auto; }
+  .hline-group { display: flex; align-items: flex-start; justify-content: center; position: relative; }
+  .hline-group::before { content: ''; position: absolute; top: 0; height: 2px; background: #333; }
+  
+  /* Level containers */
+  .level { display: flex; justify-content: center; gap: 0; flex-wrap: nowrap; }
+  .level-item { display: flex; flex-direction: column; align-items: center; }
+  .level-item .vline-top { width: 2px; height: 28px; background: #333; }
 
-  .section { padding: 0 32px 24px; }
-  .section-title { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .section-title::before, .section-title::after { content: ''; flex: 1; height: 1px; background: #2a2a3a; }
+  /* Horizontal connector bar */
+  .connector-bar { display: flex; align-items: stretch; justify-content: center; }
+  .connector-bar .hline { height: 2px; background: #333; flex: 1; align-self: flex-start; }
+  .connector-bar .corner-left { width: 50%; height: 28px; border-right: 2px solid #333; border-top: 2px solid #333; border-top-right-radius: 0; }
+  .connector-bar .corner-right { width: 50%; height: 28px; border-left: 2px solid #333; border-top: 2px solid #333; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-  .card { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 18px; transition: all 0.2s; }
-  .card:hover { border-color: #f59e0b; transform: translateY(-2px); }
-  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .card-header h2 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
-  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
-  .agent-title { color: #f59e0b; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
-  .role { color: #888; font-size: 12px; margin-bottom: 10px; }
+  /* Tree connectors using SVG-free approach */
+  .tree-row { display: flex; justify-content: center; align-items: flex-start; }
+  .tree-branch { display: flex; flex-direction: column; align-items: center; margin: 0 8px; }
+  .tree-branch .drop { width: 2px; height: 28px; background: #333; }
 
-  .status { padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-  .status.online { background: #064e3b; color: #34d399; }
-  .status.working { background: #4c1d95; color: #a78bfa; animation: pulse 2s infinite; }
-  .status.offline { background: #3f1219; color: #f87171; }
-  .status.idle { background: #422006; color: #fbbf24; }
-  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+  .spread-bar { height: 2px; background: #333; align-self: stretch; margin: 0; }
+  .spread-container { display: flex; justify-content: center; }
+  .spread-inner { display: flex; align-items: flex-start; }
+  .spread-inner .branch-col { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 170px; }
+  .spread-inner .branch-col .rise { width: 2px; height: 28px; background: #333; }
+  .spread-inner .bar-segment { height: 2px; background: #333; flex: 1; align-self: stretch; margin-top: 0; }
 
-  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
-  .metric { background: #1a1a2a; padding: 6px 10px; border-radius: 6px; }
-  .metric .label { font-size: 10px; color: #666; text-transform: uppercase; }
-  .metric .value { font-size: 13px; font-weight: 600; color: #fff; }
+  /* Simple tree with CSS */
+  .children-row { display: flex; justify-content: center; position: relative; padding-top: 28px; }
+  .children-row::before { content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 28px; background: #333; }
+  .children-row .child { display: flex; flex-direction: column; align-items: center; margin: 0 10px; position: relative; }
+  .children-row .child::before { content: ''; position: absolute; top: -28px; left: 50%; width: 2px; height: 28px; background: #333; }
+  /* Horizontal bar connecting children */
+  .children-bar { position: relative; display: flex; justify-content: center; height: 28px; }
+  .children-bar .vdown { width: 2px; height: 28px; background: #333; }
+  .children-bar .hbar { position: absolute; top: 28px; height: 2px; background: #333; }
 
-  .divider { height: 1px; background: #2a2a3a; margin: 10px 0; }
-  .tasks h3 { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .task { padding: 3px 0; font-size: 12px; display: flex; align-items: center; gap: 5px; }
-  .task .done { color: #34d399; }
-  .task .pending { color: #fbbf24; }
-  .task .working { color: #a78bfa; }
+  /* Simplified approach: just use flex + borders */
+  .org-level { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .org-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .pipe-down { width: 2px; height: 28px; background: #444; }
+  .pipe-split { display: flex; justify-content: center; align-items: stretch; }
+  .pipe-split .arm { display: flex; flex-direction: column; align-items: center; }
+  .pipe-split .arm .pipe-up { width: 2px; height: 28px; background: #444; }
+  .pipe-split .bar { height: 2px; background: #444; display: flex; align-items: flex-start; }
 
-  .backtest-summary { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 20px; }
-  .backtest-summary h3 { margin-bottom: 12px; color: #f59e0b; font-size: 15px; }
-  .bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+  /* Final simple approach */
+  .fork { display: flex; justify-content: center; }
+  .fork-inner { display: flex; position: relative; }
+  .fork-inner::after { content: ''; position: absolute; top: 0; height: 2px; background: #444; }
+  .fork-arm { display: flex; flex-direction: column; align-items: center; padding: 0 10px; }
+  .fork-arm .stem { width: 2px; height: 24px; background: #444; }
+
+  /* ---- FINAL CLEAN APPROACH ---- */
+  .org { display: flex; flex-direction: column; align-items: center; padding: 32px 8px 24px; }
+  .org .drop-line { width: 2px; height: 24px; background: #444; }
+  .org .row { display: flex; justify-content: center; align-items: flex-start; gap: 0; position: relative; }
+  .org .row.has-bar::before { content:''; position: absolute; top: 0; height: 2px; background: #444; }
+  .org .col { display: flex; flex-direction: column; align-items: center; padding: 0 12px; }
+  .org .col .up-line { width: 2px; height: 24px; background: #444; }
+  .org .sub-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin: 4px 0 2px; }
+
+  /* Backtest */
+  .backtest { margin: 16px 24px 24px; background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 20px; }
+  .backtest h3 { margin-bottom: 12px; color: #f59e0b; font-size: 14px; }
+  .bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
   .bt-metric { text-align: center; }
-  .bt-metric .val { font-size: 18px; font-weight: 700; }
+  .bt-metric .val { font-size: 17px; font-weight: 700; }
   .bt-metric .val.green { color: #34d399; }
   .bt-metric .val.red { color: #f87171; }
   .bt-metric .lbl { font-size: 10px; color: #666; margin-top: 2px; }
 
-  .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6, #f59e0b); background-size: 300% 100%; animation: loading 1.5s infinite; z-index: 1000; }
-  .loading-overlay.active { display: block; }
-  @keyframes loading { 0% { background-position:0% 50%; } 100% { background-position:300% 50%; } }
-
-  .error-msg { text-align: center; color: #f87171; padding: 40px; font-size: 14px; }
-  footer { text-align: center; padding: 24px; color: #333; font-size: 11px; }
+  .loading-overlay { display:none; position:fixed; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#f59e0b,#ef4444,#8b5cf6,#f59e0b); background-size:300% 100%; animation:loading 1.5s infinite; z-index:1000; }
+  .loading-overlay.active { display:block; }
+  @keyframes loading { 0%{background-position:0% 50%}100%{background-position:300% 50%} }
+  footer { text-align:center; padding:20px; color:#333; font-size:11px; }
 </style>
 </head>
 <body>
 
 <div class="loading-overlay" id="loader"></div>
-
 <div class="header">
   <h1>🔥 <span>Jiang Group</span> — Agent Dashboard</h1>
   <div class="header-right">
@@ -88,82 +125,103 @@
     <button class="refresh-btn" id="refreshBtn" onclick="loadStatus()">↻ Refresh</button>
   </div>
 </div>
-
 <div id="app"></div>
-
 <footer>Jiang Group • Powered by OpenClaw</footer>
 
 <script>
-const STATUS_URL = 'dashboard-status.json';
+var STATUS_URL = 'dashboard-status.json';
 
 function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleString('en-US', {
-    weekday:'short', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit', timeZoneName:'short'
-  });
+  var now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleString('en-US', {weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',timeZoneName:'short'});
 }
 
-function statusIcon(s) {
-  return {done:'<span class="done">✓</span>', pending:'<span class="pending">◉</span>', working:'<span class="working">⟳</span>'}[s] || '<span class="pending">◉</span>';
-}
-function statusBadge(s) {
-  const l = {online:'● Online', working:'◉ Working', idle:'● Idle', offline:'● Offline'};
-  return '<span class="status ' + s + '">' + (l[s]||s) + '</span>';
-}
+function dot(s) { return '<span class="status-dot '+s+'"></span>'; }
 
-function renderCard(a) {
-  const metrics = a.metrics ? Object.entries(a.metrics).map(function(e) {
-    return '<div class="metric"><div class="label">' + e[0] + '</div><div class="value">' + e[1] + '</div></div>';
-  }).join('') : '';
-  const tasks = a.tasks ? a.tasks.map(function(t) {
-    return '<div class="task">' + statusIcon(t.status) + ' ' + t.text + '</div>';
-  }).join('') : '';
-  return '<div class="card">' +
-    '<div class="card-header">' +
-      '<h2><div class="avatar" style="background:' + a.color + ';color:' + a.textColor + '">' + a.avatar + '</div> ' + a.name + '</h2>' +
-      statusBadge(a.status) +
-    '</div>' +
-    '<div class="agent-title">' + (a.title || '') + '</div>' +
-    '<div class="role">' + a.role + '</div>' +
-    (metrics ? '<div class="metrics">' + metrics + '</div>' : '') +
-    (tasks ? '<div class="divider"></div><div class="tasks"><h3>Tasks</h3>' + tasks + '</div>' : '') +
+function makeNode(a, cls) {
+  cls = cls || '';
+  return '<div class="node '+cls+'">' +
+    '<div class="avatar" style="background:'+a.color+';color:'+a.textColor+'">'+a.avatar+'</div><br>' +
+    '<div class="name">'+a.name+' '+dot(a.status || 'online')+'</div>' +
+    '<div class="title">'+(a.title||a.role||'')+'</div>' +
   '</div>';
 }
 
-function renderBacktest(bt) {
-  if (!bt) return '';
-  var m = bt.metrics.map(function(x) {
-    return '<div class="bt-metric"><div class="val ' + x.color + '">' + x.value + '</div><div class="lbl">' + x.label + '</div></div>';
-  }).join('');
-  return '<div class="section"><div class="section-title">Latest Backtest Results</div>' +
-    '<div class="backtest-summary"><h3>📊 Backtest ' + bt.version + ' — ' + bt.description + '</h3>' +
-    '<div class="bt-grid">' + m + '</div>' +
-    '<div style="margin-top:12px;color:#888;font-size:12px;">⚠️ ' + bt.note + '</div></div></div>';
-}
-
 function render(data) {
-  var html = '';
+  var ch = data.chairman;
+  var directs = data.sections[0].agents;
+  var south7 = data.sections[1].agents;
+  var bt = data.backtest;
+
+  // Find Ali (has sub-reports)
+  var ali = directs.find(function(a){return a.name==='Ali';});
+  var others = directs.filter(function(a){return a.name!=='Ali';});
+
+  // Calculate bar widths for direct reports
+  var directCount = directs.length;
+  var barPct = ((directCount - 1) * 170 + 40);
+
+  var html = '<div class="org">';
 
   // Chairman
-  var ch = data.chairman;
-  html += '<div class="chairman-section">' +
-    '<div class="chairman-card">' +
-      '<div class="chairman-avatar">' + ch.avatar + '</div>' +
-      '<div class="chairman-info"><h2>' + ch.name + '</h2><div class="title">' + ch.title + '</div></div>' +
-    '</div></div>';
+  html += makeNode({avatar:ch.avatar, color:ch.color||'#fff', textColor:ch.textColor||'#000', name:ch.name, title:ch.title, status:'online'}, 'chairman');
+  html += '<div class="drop-line"></div>';
 
-  // Sections
-  data.sections.forEach(function(sec) {
-    html += '<div class="org-line"><div class="vline"></div></div>';
-    html += '<div class="section">';
-    html += '<div class="section-title">' + sec.title + '</div>';
-    html += '<div class="grid">' + sec.agents.map(renderCard).join('') + '</div>';
+  // Direct reports row with connecting bar
+  html += '<div style="position:relative;">';
+  // Horizontal bar
+  var arms = directs.length;
+  html += '<div style="display:flex;justify-content:center;">';
+  for (var i = 0; i < arms; i++) {
+    html += '<div style="display:flex;flex-direction:column;align-items:center;min-width:180px;">';
+    // top connector piece
+    if (arms > 1) {
+      if (i === 0) {
+        html += '<div style="width:100%;height:2px;display:flex;"><div style="flex:1;"></div><div style="flex:1;background:#444;"></div></div>';
+      } else if (i === arms - 1) {
+        html += '<div style="width:100%;height:2px;display:flex;"><div style="flex:1;background:#444;"></div><div style="flex:1;"></div></div>';
+      } else {
+        html += '<div style="width:100%;height:2px;background:#444;"></div>';
+      }
+    }
+    html += '<div style="width:2px;height:22px;background:#444;"></div>';
+    html += makeNode(directs[i]);
+    // If this is Ali, draw sub-tree
+    if (directs[i].name === 'Ali' && south7.length > 0) {
+      html += '<div style="width:2px;height:22px;background:#444;"></div>';
+      html += '<div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1px;margin:2px 0;">Reports to Ali</div>';
+      html += '<div style="width:2px;height:12px;background:#444;"></div>';
+      // South7 sub-row
+      html += '<div style="display:flex;justify-content:center;">';
+      for (var j = 0; j < south7.length; j++) {
+        html += '<div style="display:flex;flex-direction:column;align-items:center;min-width:160px;">';
+        if (south7.length > 1) {
+          if (j === 0) {
+            html += '<div style="width:100%;height:2px;display:flex;"><div style="flex:1;"></div><div style="flex:1;background:#444;"></div></div>';
+          } else if (j === south7.length - 1) {
+            html += '<div style="width:100%;height:2px;display:flex;"><div style="flex:1;background:#444;"></div><div style="flex:1;"></div></div>';
+          } else {
+            html += '<div style="width:100%;height:2px;background:#444;"></div>';
+          }
+        }
+        html += '<div style="width:2px;height:18px;background:#444;"></div>';
+        html += makeNode(south7[j]);
+        html += '</div>';
+      }
+      html += '</div>';
+    }
     html += '</div>';
-  });
+  }
+  html += '</div></div>';
+
+  html += '</div>';
 
   // Backtest
-  if (data.backtest) {
-    html += renderBacktest(data.backtest);
+  if (bt) {
+    var m = bt.metrics.map(function(x){
+      return '<div class="bt-metric"><div class="val '+x.color+'">'+x.value+'</div><div class="lbl">'+x.label+'</div></div>';
+    }).join('');
+    html += '<div class="backtest"><h3>📊 Backtest '+bt.version+' — '+bt.description+'</h3><div class="bt-grid">'+m+'</div><div style="margin-top:10px;color:#888;font-size:11px;">⚠️ '+bt.note+'</div></div>';
   }
 
   document.getElementById('app').innerHTML = html;
@@ -174,26 +232,17 @@ async function loadStatus() {
   var loader = document.getElementById('loader');
   btn.classList.add('loading'); btn.textContent = '⟳ Loading...';
   loader.classList.add('active');
-
   try {
-    var res = await fetch(STATUS_URL + '?t=' + Date.now());
+    var res = await fetch(STATUS_URL+'?t='+Date.now());
     var data = await res.json();
     render(data);
     var updated = new Date(data.lastUpdated);
-    document.getElementById('updated').textContent = 'Data: ' + updated.toLocaleString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-  } catch(e) {
-    document.getElementById('app').innerHTML = '<div class="error-msg">Failed to load dashboard data. Click Refresh to retry.</div>';
-    console.error('Load failed:', e);
-  } finally {
-    btn.classList.remove('loading');
-    btn.textContent = '↻ Refresh';
-    loader.classList.remove('active');
-  }
+    document.getElementById('updated').textContent = 'Data: '+updated.toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  } catch(e) { document.getElementById('app').innerHTML='<p style="text-align:center;color:#f87171;padding:40px">Load failed. Click Refresh.</p>'; console.error(e); }
+  finally { btn.classList.remove('loading'); btn.textContent='↻ Refresh'; loader.classList.remove('active'); }
 }
 
-updateClock();
-setInterval(updateClock, 1000);
-loadStatus();
+updateClock(); setInterval(updateClock,1000); loadStatus();
 </script>
 </body>
 </html>
