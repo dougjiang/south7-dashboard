@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; }
   
-  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 24px 32px; border-bottom: 1px solid #2a2a4a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 24px 32px; border-bottom: 1px solid #2a2a4a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; position: sticky; top: 0; z-index: 100; }
   .header h1 { font-size: 24px; color: #fff; }
   .header h1 span { color: #f59e0b; }
   .header-right { display: flex; align-items: center; gap: 16px; }
@@ -18,18 +18,15 @@
   .refresh-btn:hover { background: #d97706; }
   .refresh-btn.loading { background: #666; cursor: wait; }
 
-  /* Chairman Card */
   .chairman-section { padding: 24px 32px 0; }
   .chairman-card { background: linear-gradient(135deg, #1a1a2e, #2a1a3e); border: 2px solid #f59e0b; border-radius: 16px; padding: 24px 32px; display: flex; align-items: center; gap: 20px; max-width: 500px; margin: 0 auto; }
   .chairman-avatar { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; flex-shrink: 0; border: 3px solid #f59e0b; }
   .chairman-info h2 { font-size: 20px; color: #fff; }
   .chairman-info .title { color: #f59e0b; font-size: 14px; font-weight: 600; }
 
-  /* Org lines */
   .org-line { display: flex; justify-content: center; padding: 12px 0; }
   .org-line .vline { width: 2px; height: 32px; background: #2a2a4a; }
 
-  /* Section */
   .section { padding: 0 32px 24px; }
   .section-title { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .section-title::before, .section-title::after { content: ''; flex: 1; height: 1px; background: #2a2a3a; }
@@ -62,8 +59,7 @@
   .task .pending { color: #fbbf24; }
   .task .working { color: #a78bfa; }
 
-  /* Backtest */
-  .backtest-summary { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; margin: 0 32px 24px; padding: 20px; }
+  .backtest-summary { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 20px; }
   .backtest-summary h3 { margin-bottom: 12px; color: #f59e0b; font-size: 15px; }
   .bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
   .bt-metric { text-align: center; }
@@ -75,6 +71,9 @@
   .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6, #f59e0b); background-size: 300% 100%; animation: loading 1.5s infinite; z-index: 1000; }
   .loading-overlay.active { display: block; }
   @keyframes loading { 0% { background-position:0% 50%; } 100% { background-position:300% 50%; } }
+
+  .error-msg { text-align: center; color: #f87171; padding: 40px; font-size: 14px; }
+  footer { text-align: center; padding: 24px; color: #333; font-size: 11px; }
 </style>
 </head>
 <body>
@@ -90,32 +89,9 @@
   </div>
 </div>
 
-<!-- Chairman -->
-<div class="chairman-section">
-  <div class="chairman-card" id="chairman-card"></div>
-</div>
+<div id="app"></div>
 
-<div class="org-line"><div class="vline"></div></div>
-
-<!-- Direct Reports -->
-<div class="section" id="direct-section">
-  <div class="section-title" id="direct-title">Doug's Direct Reports</div>
-  <div class="grid" id="direct-grid"></div>
-</div>
-
-<div class="org-line"><div class="vline"></div></div>
-
-<!-- South7 Team -->
-<div class="section" id="south7-section">
-  <div class="section-title" id="south7-title">South7 Capital — Investment Team (Reports to Ali)</div>
-  <div class="grid" id="south7-grid"></div>
-</div>
-
-<!-- Backtest -->
-<div class="section" id="backtest-section">
-  <div class="section-title">Latest Backtest Results</div>
-  <div class="backtest-summary" id="backtest-summary"></div>
-</div>
+<footer>Jiang Group • Powered by OpenClaw</footer>
 
 <script>
 const STATUS_URL = 'dashboard-status.json';
@@ -132,72 +108,92 @@ function statusIcon(s) {
 }
 function statusBadge(s) {
   const l = {online:'● Online', working:'◉ Working', idle:'● Idle', offline:'● Offline'};
-  return `<span class="status ${s}">${l[s]||s}</span>`;
+  return '<span class="status ' + s + '">' + (l[s]||s) + '</span>';
 }
 
 function renderCard(a) {
-  const metrics = a.metrics ? Object.entries(a.metrics).map(([k,v]) =>
-    `<div class="metric"><div class="label">${k}</div><div class="value">${v}</div></div>`
-  ).join('') : '';
-  const tasks = a.tasks ? a.tasks.map(t =>
-    `<div class="task">${statusIcon(t.status)} ${t.text}</div>`
-  ).join('') : '';
-  return `<div class="card">
-    <div class="card-header">
-      <h2><div class="avatar" style="background:${a.color};color:${a.textColor}">${a.avatar}</div> ${a.name}</h2>
-      ${statusBadge(a.status)}
-    </div>
-    <div class="agent-title">${a.title || ''}</div>
-    <div class="role">${a.role}</div>
-    ${metrics ? `<div class="metrics">${metrics}</div>` : ''}
-    ${tasks ? `<div class="divider"></div><div class="tasks"><h3>Tasks</h3>${tasks}</div>` : ''}
-  </div>`;
+  const metrics = a.metrics ? Object.entries(a.metrics).map(function(e) {
+    return '<div class="metric"><div class="label">' + e[0] + '</div><div class="value">' + e[1] + '</div></div>';
+  }).join('') : '';
+  const tasks = a.tasks ? a.tasks.map(function(t) {
+    return '<div class="task">' + statusIcon(t.status) + ' ' + t.text + '</div>';
+  }).join('') : '';
+  return '<div class="card">' +
+    '<div class="card-header">' +
+      '<h2><div class="avatar" style="background:' + a.color + ';color:' + a.textColor + '">' + a.avatar + '</div> ' + a.name + '</h2>' +
+      statusBadge(a.status) +
+    '</div>' +
+    '<div class="agent-title">' + (a.title || '') + '</div>' +
+    '<div class="role">' + a.role + '</div>' +
+    (metrics ? '<div class="metrics">' + metrics + '</div>' : '') +
+    (tasks ? '<div class="divider"></div><div class="tasks"><h3>Tasks</h3>' + tasks + '</div>' : '') +
+  '</div>';
 }
 
 function renderBacktest(bt) {
   if (!bt) return '';
-  const m = bt.metrics.map(m =>
-    `<div class="bt-metric"><div class="val ${m.color}">${m.value}</div><div class="lbl">${m.label}</div></div>`
-  ).join('');
-  return `<h3>📊 Backtest ${bt.version} — ${bt.description}</h3>
-    <div class="bt-grid">${m}</div>
-    <div style="margin-top:12px;color:#888;font-size:12px;">⚠️ ${bt.note}</div>`;
+  var m = bt.metrics.map(function(x) {
+    return '<div class="bt-metric"><div class="val ' + x.color + '">' + x.value + '</div><div class="lbl">' + x.label + '</div></div>';
+  }).join('');
+  return '<div class="section"><div class="section-title">Latest Backtest Results</div>' +
+    '<div class="backtest-summary"><h3>📊 Backtest ' + bt.version + ' — ' + bt.description + '</h3>' +
+    '<div class="bt-grid">' + m + '</div>' +
+    '<div style="margin-top:12px;color:#888;font-size:12px;">⚠️ ' + bt.note + '</div></div></div>';
+}
+
+function render(data) {
+  var html = '';
+
+  // Chairman
+  var ch = data.chairman;
+  html += '<div class="chairman-section">' +
+    '<div class="chairman-card">' +
+      '<div class="chairman-avatar">' + ch.avatar + '</div>' +
+      '<div class="chairman-info"><h2>' + ch.name + '</h2><div class="title">' + ch.title + '</div></div>' +
+    '</div></div>';
+
+  // Sections
+  data.sections.forEach(function(sec) {
+    html += '<div class="org-line"><div class="vline"></div></div>';
+    html += '<div class="section">';
+    html += '<div class="section-title">' + sec.title + '</div>';
+    html += '<div class="grid">' + sec.agents.map(renderCard).join('') + '</div>';
+    html += '</div>';
+  });
+
+  // Backtest
+  if (data.backtest) {
+    html += renderBacktest(data.backtest);
+  }
+
+  document.getElementById('app').innerHTML = html;
 }
 
 async function loadStatus() {
-  const btn = document.getElementById('refreshBtn');
-  const loader = document.getElementById('loader');
+  var btn = document.getElementById('refreshBtn');
+  var loader = document.getElementById('loader');
   btn.classList.add('loading'); btn.textContent = '⟳ Loading...';
   loader.classList.add('active');
 
   try {
-    const res = await fetch(STATUS_URL + '?t=' + Date.now());
-    const data = await res.json();
-
-    // Chairman
-    const ch = data.chairman;
-    document.getElementById('chairman-card').innerHTML = `
-      <div class="chairman-avatar">${ch.avatar}</div>
-      <div class="chairman-info"><h2>${ch.name}</h2><div class="title">${ch.title}</div></div>`;
-
-    // Sections
-    data.sections.forEach(sec => {
-      const gridId = sec.id === 'direct-reports' ? 'direct-grid' : 'south7-grid';
-      const titleId = sec.id === 'direct-reports' ? 'direct-title' : 'south7-title';
-      document.getElementById(gridId).innerHTML = sec.agents.map(renderCard).join('');
-      document.getElementById(titleId).textContent = sec.title;
-    });
-
-    // Backtest
-    document.getElementById('backtest-summary').innerHTML = renderBacktest(data.backtest);
-
-    const updated = new Date(data.lastUpdated);
+    var res = await fetch(STATUS_URL + '?t=' + Date.now());
+    var data = await res.json();
+    render(data);
+    var updated = new Date(data.lastUpdated);
     document.getElementById('updated').textContent = 'Data: ' + updated.toLocaleString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-  } catch(e) { console.error('Load failed:', e); }
-  finally { btn.classList.remove('loading'); btn.textContent = '↻ Refresh'; loader.classList.remove('active'); }
+  } catch(e) {
+    document.getElementById('app').innerHTML = '<div class="error-msg">Failed to load dashboard data. Click Refresh to retry.</div>';
+    console.error('Load failed:', e);
+  } finally {
+    btn.classList.remove('loading');
+    btn.textContent = '↻ Refresh';
+    loader.classList.remove('active');
+  }
 }
 
-updateClock(); setInterval(updateClock, 1000); loadStatus();
+updateClock();
+setInterval(updateClock, 1000);
+loadStatus();
 </script>
 </body>
 </html>
