@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T21:12:00-05:00",
+  "lastUpdated": "2026-03-08T22:25:00-04:00",
   "chairman": {
     "name": "Doug Jiang",
     "title": "Chairman — Jiang Group",
@@ -14,64 +14,74 @@
       "agents": [
         {
           "name": "Ali",
-          "avatar": "A",
+          "avatar": "🔥",
           "color": "#f59e0b",
           "textColor": "#000",
           "status": "online",
           "title": "Group COO & Manager, South7 Capital",
-          "role": "Manages all agents, investment operations, firm strategy",
+          "description": "Oversees all Jiang Group operations. Manages South7 Capital quant team (Derek, Eric, Frank), runs prediction market trading on Kalshi, coordinates daily standups and weekly department meetings, and maintains all agent infrastructure.",
           "tasks": [
-            {"text": "Market open/close briefs", "status": "done"},
-            {"text": "Daily standup (9:30 AM ET)", "status": "done"},
-            {"text": "Manage Derek/Eric/Frank", "status": "done"},
-            {"text": "Dashboard & infrastructure", "status": "done"},
-            {"text": "Telegram group setup", "status": "pending"}
+            {"text": "Daily standup with Derek/Eric/Frank", "status": "active"},
+            {"text": "Weekly dept head meeting (Fri 4 PM)", "status": "active"},
+            {"text": "Market open/close briefs (Mon-Fri)", "status": "active"},
+            {"text": "Kalshi prediction market trading", "status": "active"},
+            {"text": "Prediction market bot (10 files complete)", "status": "done"},
+            {"text": "Infrastructure health check (daily 5 AM)", "status": "active"},
+            {"text": "Weekly backup & security scan", "status": "active"},
+            {"text": "Daily self-improvement cron", "status": "active"},
+            {"text": "Fix Telegram group permissions", "status": "pending"},
+            {"text": "Deploy website to GoDaddy", "status": "pending"},
+            {"text": "Debug MiniMax on independent agents", "status": "pending"}
           ],
-          "metrics": {"Gateway": ":18789", "Model": "MiniMax", "Telegram": "@AliJiang_bot", "Direct Reports": "3"}
+          "metrics": {"Gateway": ":18789", "Model": "MiniMax/Opus", "Telegram": "@AliJiang_bot", "Reports": "3 directs + 3 sub"}
         },
         {
           "name": "Bella",
-          "avatar": "B",
+          "avatar": "💜",
           "color": "#8b5cf6",
           "textColor": "#fff",
           "status": "online",
           "title": "Executive Assistant",
-          "role": "Personal assistance, travel, scheduling",
+          "description": "Personal assistant handling travel planning, scheduling, research, and day-to-day organizational tasks. Monitors email inbox and manages Doug's calendar.",
           "tasks": [
+            {"text": "Email monitoring (jiangaliclaw@gmail.com)", "status": "active"},
             {"text": "Charleston weekend research", "status": "done"},
-            {"text": "Beach getaway options", "status": "done"}
+            {"text": "Beach getaway options", "status": "done"},
+            {"text": "Personal scheduling & reminders", "status": "active"}
           ],
-          "metrics": {"Gateway": ":18790", "Telegram": "@BellaJiang_bot"}
+          "metrics": {"Gateway": ":18790", "Model": "MiniMax", "Telegram": "@BellaJiang_bot"}
         },
         {
           "name": "Charlie",
-          "avatar": "C",
+          "avatar": "⚡",
           "color": "#06b6d4",
           "textColor": "#000",
           "status": "online",
           "title": "Head of DJI Energy",
-          "role": "Marketing, bid analysis, product catalog",
+          "description": "Leads marketing and business development for DJI Energy. Analyzes switchgear bids, creates product cut sheets, and monitors the energy equipment market.",
           "tasks": [
-            {"text": "KANSO bid analysis", "status": "done"},
+            {"text": "KANSO 60% MV Switchgear bid analysis", "status": "done"},
             {"text": "Fluidstack cut sheets", "status": "done"},
-            {"text": "DJI Energy product catalog", "status": "pending"}
+            {"text": "Additional product spec sheets", "status": "pending"},
+            {"text": "Market monitoring & competitive intel", "status": "active"}
           ],
-          "metrics": {"Gateway": ":18791", "Telegram": "@CharlieJiang_bot"}
+          "metrics": {"Gateway": ":18791", "Model": "MiniMax", "Telegram": "@CharlieJiang_bot"}
         },
         {
           "name": "George",
-          "avatar": "G",
+          "avatar": "📊",
           "color": "#f472b6",
           "textColor": "#000",
-          "status": "idle",
+          "status": "online",
           "title": "Head of Charles River CPAs",
-          "role": "Tax preparation, planning, client management",
+          "description": "Runs the CPA tax preparation firm targeting NYC/Long Island real estate contractors and developers. Handles tax returns (1065, 1120S, 1040), client management, and regulatory compliance.",
           "tasks": [
-            {"text": "Guo's Construction 1065 + K-1s", "status": "done"},
+            {"text": "Guo's Construction LLC 1065 + K-1s", "status": "done"},
             {"text": "CPA knowledge base", "status": "done"},
-            {"text": "NY CPA license guide", "status": "done"},
+            {"text": "NY CPA license guide (CPA Mobility)", "status": "done"},
             {"text": "EFIN application guide", "status": "done"},
-            {"text": "Form 7004 extension", "status": "pending"},
+            {"text": "File Form 7004 extension (Mar 16 deadline)", "status": "urgent"},
+            {"text": "Apply for EFIN + confirm PTIN", "status": "pending"},
             {"text": "2026 tax season client acquisition", "status": "pending"}
           ],
           "metrics": {"Firm": "Charles River CPAs", "Client": "Guo's Construction", "Deadline": "Mar 16"}
@@ -84,69 +94,88 @@
       "agents": [
         {
           "name": "Derek",
-          "avatar": "D",
+          "avatar": "🔬",
           "color": "#10b981",
           "textColor": "#000",
           "status": "idle",
           "title": "Quantitative Researcher",
-          "role": "Factor discovery, backtesting, academic research",
+          "description": "Discovers and validates alpha factors, builds backtesting frameworks, and conducts academic research. Manages the factor library (40+ factors across 6 families) and prediction market calibration models.",
           "tasks": [
-            {"text": "Factor framework (40 factors)", "status": "done"},
-            {"text": "Backtest engine v1 → v4", "status": "done"},
-            {"text": "Studied 20 research papers", "status": "done"},
-            {"text": "Pairs trading / stat arb module", "status": "done"},
-            {"text": "Backtest v5 (broader universe)", "status": "pending"}
+            {"text": "Factor framework (6 families, 40 factors)", "status": "done"},
+            {"text": "Backtest engine v1–v4", "status": "done"},
+            {"text": "Pairs trading module (Kalman filter)", "status": "done"},
+            {"text": "Polymarket calibrator + live scanner", "status": "done"},
+            {"text": "Backtest v5 — fix factor IC, full 500 universe", "status": "pending"},
+            {"text": "Iran deep dive research note", "status": "pending"},
+            {"text": "Prediction model calibration on real data", "status": "pending"}
           ],
-          "metrics": {"Skill": "quant-research", "Backtest": "v4", "Papers": "22 studied"}
+          "metrics": {"Skill": "quant-research", "Papers": "22 studied", "Factors": "40+"}
         },
         {
           "name": "Eric",
-          "avatar": "E",
+          "avatar": "📈",
           "color": "#3b82f6",
           "textColor": "#fff",
           "status": "idle",
           "title": "Portfolio Manager",
-          "role": "Optimization, execution, rebalancing",
+          "description": "Builds and maintains the end-to-end portfolio management pipeline: alpha signal integration, CVXPY optimization, IBKR execution, rebalancing, and analytics. Also built the prediction market trading bot for Kalshi.",
           "tasks": [
             {"text": "portfolio_optimizer.py (CVXPY)", "status": "done"},
-            {"text": "execution.py (IBKR)", "status": "done"},
+            {"text": "execution.py (IBKR integration)", "status": "done"},
             {"text": "rebalancer.py", "status": "done"},
-            {"text": "IBKR live connection", "status": "pending"},
-            {"text": "Integrate with Derek's signals", "status": "pending"}
+            {"text": "pipeline.py (8-stage orchestrator)", "status": "done"},
+            {"text": "data_manager.py + portfolio_analytics.py", "status": "done"},
+            {"text": "Prediction market bot (10 files, 5,250 lines)", "status": "done"},
+            {"text": "Portfolio system presentation (HTML)", "status": "done"},
+            {"text": "Kalshi API integration", "status": "pending"},
+            {"text": "IBKR paper trading end-to-end test", "status": "pending"},
+            {"text": "Connect to Derek's live alpha signals", "status": "pending"}
           ],
-          "metrics": {"Skill": "portfolio-opt", "IBKR": "Pending"}
+          "metrics": {"Skill": "portfolio-opt", "Code": "6 modules", "Bot": "10 files"}
         },
         {
           "name": "Frank",
-          "avatar": "F",
+          "avatar": "🛡️",
           "color": "#ef4444",
           "textColor": "#fff",
           "status": "idle",
           "title": "Risk Manager",
-          "role": "VaR, stress tests, pre-trade checks, attribution",
+          "description": "Monitors portfolio risk in real-time with traffic-light alerts. Runs VaR/CVaR calculations, 6 stress test scenarios, market regime detection, and pre-trade compliance checks.",
           "tasks": [
-            {"text": "risk_engine.py (VaR + stress)", "status": "done"},
+            {"text": "risk_dashboard.py (VaR, alerts)", "status": "done"},
+            {"text": "stress_scenarios.py (6 scenarios)", "status": "done"},
+            {"text": "regime_detector.py (bull/bear/crisis)", "status": "done"},
             {"text": "pre_trade_checks.py", "status": "done"},
             {"text": "attribution.py (Brinson)", "status": "done"},
-            {"text": "Live risk monitoring", "status": "pending"},
-            {"text": "Integrate with Eric's trades", "status": "pending"}
+            {"text": "Connect regime detector to optimizer", "status": "pending"},
+            {"text": "Live risk monitoring via IBKR", "status": "pending"}
           ],
-          "metrics": {"Skill": "risk-mgmt", "Gross Limit": "≤400%"}
+          "metrics": {"Skill": "risk-mgmt", "Scenarios": "6", "Regime": "TRANSITION"}
         }
       ]
     }
   ],
   "backtest": {
-    "version": "v4",
-    "description": "$20M Model Portfolio, MSCI All World — 6-Factor Academic Model",
+    "version": "v5",
+    "description": "$20M Model Portfolio — 100-Stock Subset Test",
     "metrics": [
-      {"label": "Total Return", "value": "+3.73%", "color": "green"},
-      {"label": "Sharpe Ratio", "value": "-0.97", "color": "red"},
-      {"label": "Max Drawdown", "value": "-10.5%", "color": "green"},
+      {"label": "Total Return", "value": "-10.31%", "color": "red"},
+      {"label": "Sharpe Ratio", "value": "-2.17", "color": "red"},
+      {"label": "Long Leg", "value": "+25.72%", "color": "green"},
+      {"label": "Short Leg", "value": "-30.06%", "color": "red"},
       {"label": "Portfolio Beta", "value": "0.000", "color": "green"},
-      {"label": "Avg Leverage", "value": "1.72x", "color": "green"},
-      {"label": "Dollar-Neutral", "value": "Yes", "color": "green"}
+      {"label": "TC Drag", "value": "35.9 bps", "color": "green"},
+      {"label": "Turnover", "value": "22.5%/mo", "color": "green"},
+      {"label": "Max Drawdown", "value": "-12.33%", "color": "green"}
     ],
-    "note": "Risk controls work. Alpha needs improvement. Pairs trading module added as second alpha stream."
+    "note": "Long book works (+26%), short book bleeds in bull market. 100-stock subset too small — need full 500+ universe. Factor IC tracking broken."
+  },
+  "kalshi": {
+    "bankroll": 2500,
+    "deployed": 261.87,
+    "positions": [
+      {"market": "US-Iran Deal 2026", "contracts": 319, "entry": "47¢", "direction": "YES"},
+      {"market": "Pahlavi visits Iran", "contracts": 263, "entry": "38¢", "direction": "YES"}
+    ]
   }
 }

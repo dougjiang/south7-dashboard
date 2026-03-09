@@ -22,7 +22,7 @@
   .org-chart { display: flex; flex-direction: column; align-items: center; padding: 32px 16px 16px; }
   
   /* Node styles */
-  .node { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 14px 18px; min-width: 160px; max-width: 220px; text-align: center; position: relative; transition: all 0.2s; }
+  .node { background: #12121a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 14px 18px; min-width: 180px; max-width: 280px; text-align: center; position: relative; transition: all 0.2s; }
   .node:hover { border-color: #f59e0b; transform: translateY(-2px); }
   .node.chairman { background: linear-gradient(135deg, #1a1a2e, #2a1a3e); border: 2px solid #f59e0b; min-width: 220px; }
   .node .avatar { width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; margin-bottom: 6px; }
@@ -33,6 +33,17 @@
   .node .status-dot.working { background: #a78bfa; animation: pulse 2s infinite; }
   .node .status-dot.idle { background: #fbbf24; }
   .node .status-dot.offline { background: #f87171; }
+  .node .desc { font-size: 10px; color: #888; margin-top: 6px; line-height: 1.4; text-align: left; max-width: 200px; display: none; }
+  .node:hover .desc { display: block; }
+  .node .task-toggle { font-size: 10px; color: #f59e0b; cursor: pointer; margin-top: 6px; user-select: none; }
+  .node .task-toggle:hover { text-decoration: underline; }
+  .task-list { display: none; text-align: left; margin-top: 6px; max-width: 220px; }
+  .task-list.open { display: block; }
+  .task-list .task { font-size: 10px; padding: 2px 0; display: flex; align-items: flex-start; gap: 4px; }
+  .task-list .task .dot-done { color: #34d399; }
+  .task-list .task .dot-active { color: #3b82f6; }
+  .task-list .task .dot-pending { color: #666; }
+  .task-list .task .dot-urgent { color: #f87171; animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
 
   /* Connector lines */
@@ -140,10 +151,27 @@ function dot(s) { return '<span class="status-dot '+s+'"></span>'; }
 
 function makeNode(a, cls) {
   cls = cls || '';
+  var id = 'tasks-' + (a.name||'').replace(/\s/g,'');
+  var taskHtml = '';
+  if (a.tasks && a.tasks.length > 0) {
+    var statusMap = {done:'dot-done', active:'dot-active', pending:'dot-pending', urgent:'dot-urgent'};
+    var iconMap = {done:'✓', active:'●', pending:'○', urgent:'⚠'};
+    taskHtml = '<div class="task-toggle" onclick="var el=document.getElementById(\''+id+'\');el.classList.toggle(\'open\');this.textContent=el.classList.contains(\'open\')?\'▲ Hide tasks\':\'▼ '+a.tasks.length+' tasks\'">▼ '+a.tasks.length+' tasks</div>';
+    taskHtml += '<div class="task-list" id="'+id+'">';
+    a.tasks.forEach(function(t) {
+      var cls = statusMap[t.status] || 'dot-pending';
+      var icon = iconMap[t.status] || '○';
+      taskHtml += '<div class="task"><span class="'+cls+'">'+icon+'</span> '+t.text+'</div>';
+    });
+    taskHtml += '</div>';
+  }
+  var descHtml = a.description ? '<div class="desc">'+a.description+'</div>' : '';
   return '<div class="node '+cls+'">' +
     '<div class="avatar" style="background:'+a.color+';color:'+a.textColor+'">'+a.avatar+'</div><br>' +
     '<div class="name">'+a.name+' '+dot(a.status || 'online')+'</div>' +
     '<div class="title">'+(a.title||a.role||'')+'</div>' +
+    descHtml +
+    taskHtml +
   '</div>';
 }
 
