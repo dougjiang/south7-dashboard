@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T13:48:00-04:00",
+  "lastUpdated": "2026-03-13T13:49:00-04:00",
   "chairman": {
     "name": "Doug Jiang",
     "title": "Chairman \u2014 Jiang Group",
@@ -338,6 +338,18 @@
     "version": "v6",
     "description": "$20M Model \u2014 140% Long / 40% Short / 100% Net",
     "benchmark": "60% SPY + 40% TLT",
+    "objectives": {
+      "sharpe": {
+        "target": "> 1.0",
+        "current": "0.71",
+        "status": "red"
+      },
+      "max_dd": {
+        "target": "< 30%",
+        "current": "-18.5%",
+        "status": "green"
+      }
+    },
     "metrics": [
       {
         "label": "Total Return",
@@ -352,7 +364,7 @@
       {
         "label": "Sharpe Ratio",
         "value": "0.71",
-        "color": "green"
+        "color": "red"
       },
       {
         "label": "Max Drawdown",
@@ -389,7 +401,7 @@
       {
         "label": "Our Sharpe",
         "value": "0.71",
-        "color": "green"
+        "color": "red"
       },
       {
         "label": "Benchmark Sharpe",
@@ -397,7 +409,7 @@
         "color": "gray"
       }
     ],
-    "note": "140% long, 40% short, 100% net long. Beating 60/40 benchmark by 10.7% annualized with higher Sharpe. Turnover high at 93%/mo."
+    "note": "Sharpe target: >1.0 (current: 0.71). Max DD target: <30% (current: -18.5%). Need to improve Sharpe to meet objective."
   },
   "kalshi": {
     "bankroll": 2500,
