@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T13:41:00-04:00",
+  "lastUpdated": "2026-03-13T13:48:00-04:00",
   "chairman": {
     "name": "Doug Jiang",
     "title": "Chairman \u2014 Jiang Group",
@@ -368,19 +368,36 @@
         "label": "Net Exposure",
         "value": "100% long",
         "color": "green"
+      }
+    ],
+    "comparison": [
+      {
+        "label": "Alpha (ann.)",
+        "value": "+10.7%",
+        "color": "green"
       },
       {
-        "label": "Turnover",
-        "value": "93%/mo",
-        "color": "red"
+        "label": "Our Return",
+        "value": "+18.4%",
+        "color": "green"
       },
       {
-        "label": "Win Rate",
-        "value": "49.9%",
+        "label": "Benchmark Return",
+        "value": "+7.7%",
+        "color": "gray"
+      },
+      {
+        "label": "Our Sharpe",
+        "value": "0.71",
+        "color": "green"
+      },
+      {
+        "label": "Benchmark Sharpe",
+        "value": "0.57",
         "color": "gray"
       }
     ],
-    "note": "140% long, 40% short, 100% net long. Benchmark (60% SPY + 40% TLT) comparison pending \u2014 need to fetch historical SPY/TLT data. Turnover high at 93%/mo."
+    "note": "140% long, 40% short, 100% net long. Beating 60/40 benchmark by 10.7% annualized with higher Sharpe. Turnover high at 93%/mo."
   },
   "kalshi": {
     "bankroll": 2500,
