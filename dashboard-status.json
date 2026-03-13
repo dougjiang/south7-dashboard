@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T13:37:00-04:00",
+  "lastUpdated": "2026-03-13T13:41:00-04:00",
   "chairman": {
     "name": "Doug Jiang",
     "title": "Chairman \u2014 Jiang Group",
@@ -340,37 +340,47 @@
     "benchmark": "60% SPY + 40% TLT",
     "metrics": [
       {
+        "label": "Total Return",
+        "value": "+181.3%",
+        "color": "green"
+      },
+      {
+        "label": "Ann. Return",
+        "value": "+18.4%",
+        "color": "green"
+      },
+      {
+        "label": "Sharpe Ratio",
+        "value": "0.71",
+        "color": "green"
+      },
+      {
+        "label": "Max Drawdown",
+        "value": "-18.5%",
+        "color": "green"
+      },
+      {
         "label": "Gross Exposure",
         "value": "180%",
         "color": "green"
       },
       {
-        "label": "Long Leg",
-        "value": "140%",
-        "color": "green"
-      },
-      {
-        "label": "Short Leg",
-        "value": "40%",
-        "color": "green"
-      },
-      {
         "label": "Net Exposure",
-        "value": "100%",
+        "value": "100% long",
         "color": "green"
       },
       {
-        "label": "Benchmark (60/40)",
-        "value": "TBD",
-        "color": "gray"
+        "label": "Turnover",
+        "value": "93%/mo",
+        "color": "red"
       },
       {
-        "label": "Alpha vs Benchmark",
-        "value": "TBD",
+        "label": "Win Rate",
+        "value": "49.9%",
         "color": "gray"
       }
     ],
-    "note": "New config: 140% long, 40% short, 100% net long. Benchmark: 60% SPY + 40% TLT. Running backtest..."
+    "note": "140% long, 40% short, 100% net long. Benchmark (60% SPY + 40% TLT) comparison pending \u2014 need to fetch historical SPY/TLT data. Turnover high at 93%/mo."
   },
   "kalshi": {
     "bankroll": 2500,
