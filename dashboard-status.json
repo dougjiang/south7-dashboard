@@ -293,8 +293,8 @@
           "color": "#ef4444",
           "textColor": "#fff",
           "status": "idle",
-          "title": "Risk Manager",
-          "description": "Monitors portfolio risk in real-time with traffic-light alerts. Runs VaR/CVaR calculations, 6 stress test scenarios, market regime detection, and pre-trade compliance checks.",
+          "title": "Chief Risk & Security Officer",
+          "description": "Monitors portfolio risk with traffic-light alerts and develops security protocols for all South7 Capital agents. Manages VaR/CVaR calculations, stress tests, and agent security defense including supply chain integrity and credential protection.",
           "tasks": [
             {
               "text": "risk_dashboard.py (VaR, alerts)",
@@ -328,7 +328,8 @@
           "metrics": {
             "Skill": "risk-mgmt",
             "Scenarios": "6",
-            "Regime": "TRANSITION"
+            "Regime": "TRANSITION",
+            "Responsibilities": "Investment Risk + Agent Security"
           }
         }
       ]
