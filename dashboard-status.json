@@ -317,6 +317,10 @@
               "status": "done"
             },
             {
+              "text": "Daily risk monitor (daily_monitor.py)",
+              "status": "done"
+            },
+            {
               "text": "Connect regime detector to optimizer",
               "status": "pending"
             },
@@ -363,8 +367,8 @@
         "color": "green"
       },
       {
-        "label": "Turnover",
-        "value": "45%/qtr",
+        "label": "Turnover (cap: 200%/mo)",
+        "value": "45%/mo \u26a0\ufe0f",
         "color": "green"
       },
       {
@@ -383,7 +387,7 @@
         "color": "green"
       }
     ],
-    "note": "TARGET ACHIEVED: Sharpe > 1.0! Key insight: quarterly rebalancing with 40% turnover cap improves returns by reducing overtrading. Trend filtering did not help."
+    "note": "Turnover cap: 200%/mo. Current 45%/mo is within limits."
   },
   "kalshi": {
     "bankroll": 2500,
